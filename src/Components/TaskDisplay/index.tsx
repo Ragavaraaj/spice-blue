@@ -35,7 +35,7 @@ export const TaskDisplay: FC<Props> = (props) => {
           onClick={localOnClickOfDone}
           disabled={props.data.is_completed === 0 ? false : true}
         >
-          done
+          {props.loading ? "pending" : "done"}
         </button>
       </ButtonGroup>
     </Content>

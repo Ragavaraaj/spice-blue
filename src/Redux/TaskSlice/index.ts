@@ -14,6 +14,7 @@ export interface CounterState {
   allTask: AddNewTaskResponse_Results[];
   status: {
     editOrAddTask: StatusType;
+    completeTask: StatusType;
     deleteTask: StatusType;
   };
 }
@@ -22,6 +23,7 @@ const initialState: CounterState = {
   status: {
     editOrAddTask: "idle",
     deleteTask: "idle",
+    completeTask: "idle",
   },
   accessToken: "",
   userDetails: {},
@@ -65,6 +67,10 @@ export const taskSlice = createSlice({
     updateStateDeleteTask: (state, action: PayloadAction<StatusType>) => {
       state.status = { ...state.status, deleteTask: action.payload };
     },
+
+    updateStateCompleteTask: (state, action: PayloadAction<StatusType>) => {
+      state.status = { ...state.status, completeTask: action.payload };
+    },
   },
 });
 
@@ -75,6 +81,7 @@ export const {
   updateAllTask,
   updateStateEditOrAddTask,
   updateStateDeleteTask,
+  updateStateCompleteTask,
 } = taskSlice.actions;
 
 export * from "./action";

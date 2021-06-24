@@ -20,9 +20,10 @@ export const Task: FC<Props> = (props) => {
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(AccessTokenSelector);
   const allTask = useAppSelector(AllTaskSelector);
-  const state = useAppSelector(StatusSelector);
+  const status = useAppSelector(StatusSelector);
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
   const [taskIndex, setTaskIndex] = useState<number>(-1);
+  const [completionTaskIndex, setCompletionTaskIndex] = useState<number>(-1);
 
   const sendData = (data: AddNewTaskPayLoadType) => {
     const payLoad: AddNewTaskPayLoadType = {
@@ -51,36 +52,37 @@ export const Task: FC<Props> = (props) => {
   }, [dispatch, accessToken]);
 
   useEffect(() => {
-    if (state.deleteTask === "loading" || state.editOrAddTask === "loading") {
+    if (status.deleteTask === "loading" || status.editOrAddTask === "loading") {
       setOpenDropDown(true);
     } else {
       setOpenDropDown(false);
     }
     setTaskIndex(-1);
-  }, [state]);
+  }, [status]);
 
   const editTask = (taskId: number) => {
     setOpenDropDown(true);
     setTaskIndex(taskId);
   };
 
-  const generatorInitialValue = (taskId?: number) => {
+  const generatorInitialValue = (index?: number) => {
     return {
-      assigned_user: allTask[taskId ?? taskIndex]?.user_id,
-      task_date: allTask[taskId ?? taskIndex]?.task_date,
-      task_msg: allTask[taskId ?? taskIndex]?.task_msg,
-      task_time: allTask[taskId ?? taskIndex]?.task_time,
-      time_zone: allTask[taskId ?? taskIndex]?.task_time,
-      is_completed: allTask[taskId ?? taskIndex]?.is_completed,
+      assigned_user: allTask[index ?? taskIndex]?.user_id,
+      task_date: allTask[index ?? taskIndex]?.task_date,
+      task_msg: allTask[index ?? taskIndex]?.task_msg,
+      task_time: allTask[index ?? taskIndex]?.task_time,
+      time_zone: allTask[index ?? taskIndex]?.task_time,
+      is_completed: allTask[index ?? taskIndex]?.is_completed,
     };
   };
 
-  const completeTask = (taskId: number) => {
+  const completeTask = (index: number) => {
     let payLoad: AddNewTaskPayLoadType = {
-      ...generatorInitialValue(taskId),
+      ...generatorInitialValue(index),
       is_completed: 1,
     };
-    dispatch(updateExistingTask(allTask[taskId]?.id, payLoad));
+    setCompletionTaskIndex(index);
+    dispatch(updateExistingTask(allTask[index]?.id, payLoad, true));
   };
 
   const editData = (data: AddNewTaskPayLoadType) => {
@@ -117,6 +119,9 @@ export const Task: FC<Props> = (props) => {
           allTask.map((x, i) => (
             <TaskDisplay
               data={x}
+              loading={
+                i === completionTaskIndex && status.completeTask === "loading"
+              }
               key={`key_${i}`}
               taskIndex={i}
               onEdit={editTask}
