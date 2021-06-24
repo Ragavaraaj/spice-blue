@@ -1,7 +1,5 @@
 import { FormEvent, MouseEvent } from "react";
 import { IPage } from "../../AppInterface";
-import { FetchDropDownDataType_Results_Data } from "../../ApiResponseType";
-
 export interface Props {
   setPage: React.Dispatch<React.SetStateAction<IPage>>;
 }
