@@ -5,6 +5,7 @@ import {
   updateAllTask,
   updateStateEditOrAddTask,
   updateStateDeleteTask,
+  updateStateCompleteTask,
 } from ".";
 import { getURL, ROUTE } from "../constants";
 import { getData, postData, updateData, deleteData } from "../../utils/fetch";
@@ -83,9 +84,14 @@ export const addNewTask = (payload: AddNewTaskPayLoadType): AppThunk => async (
 
 export const updateExistingTask = (
   taskId: string,
-  payload: AddNewTaskPayLoadType
+  payload: AddNewTaskPayLoadType,
+  completeTask = false
 ): AppThunk => async (dispatch, getState) => {
-  dispatch(updateStateEditOrAddTask("loading"));
+  dispatch(
+    !completeTask
+      ? updateStateEditOrAddTask("loading")
+      : updateStateCompleteTask("loading")
+  );
   return await updateData(
     getURL(ROUTE.toGetAndUpdateTask),
     taskId,
@@ -96,7 +102,11 @@ export const updateExistingTask = (
       const rest = getState().task.allTask.filter((x) => x.id !== taskId);
       batch(() => {
         dispatch(updateAllTask([...rest, json.results]));
-        dispatch(updateStateEditOrAddTask("idle"));
+        dispatch(
+          !completeTask
+            ? updateStateEditOrAddTask("idle")
+            : updateStateCompleteTask("idle")
+        );
       });
     })
     .catch((err) => {
