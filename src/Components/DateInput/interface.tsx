@@ -1,20 +1,17 @@
 import { MouseEvent } from "react";
+import { OnClickFunctionType } from "../../utils/commonTypes";
 
 export interface Props {
   initialValue?: string;
   onChange: (name: string, data: string) => void;
 }
 
-export type localOnClickDivType = (event: MouseEvent<HTMLElement>) => void;
-
 export type IncOrDecType = (
   x: "year" | "month",
   y: "inc" | "dec"
-) => (event: MouseEvent<HTMLElement>) => void;
+) => OnClickFunctionType;
 
-export type OnSelectDateType = (
-  date: number
-) => (event: MouseEvent<HTMLElement>) => void;
+export type OnSelectDateType = (date: number) => OnClickFunctionType;
 
 export interface DoubleChevronProps {
   moveToRight?: boolean;

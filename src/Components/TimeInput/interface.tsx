@@ -1,4 +1,4 @@
-import { MouseEvent } from "react";
+import { OnClickFunctionType } from "../../utils/commonTypes";
 
 interface InitialValueInterface {
   hours: string;
@@ -7,16 +7,14 @@ interface InitialValueInterface {
 }
 
 export interface Props {
-  initialValue: InitialValueInterface;
+  initialValue?: InitialValueInterface;
   onChange: (name: string, data: number) => void;
 }
 
-export type localOnClickType = (
+export type OnChangeOfTimeType = (
   x: "hours" | "minutes" | "amOrPm",
   y: string
-) => (event: MouseEvent<HTMLElement>) => void;
-
-export type localOnClickDivType = (event: MouseEvent<HTMLElement>) => void;
+) => OnClickFunctionType;
 
 export interface DropDownDisplayProps {
   selected: boolean;

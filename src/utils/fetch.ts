@@ -1,5 +1,4 @@
 export async function postData(url = "", data = {}, auth = "") {
-  // Default options are marked with *
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -7,13 +6,12 @@ export async function postData(url = "", data = {}, auth = "") {
       Accept: "application/json",
       Authorization: `Bearer ${auth}`,
     },
-    body: JSON.stringify(data), // body data type must match "Content-Type" header
+    body: JSON.stringify(data),
   });
-  return response.json(); // parses JSON response into native JavaScript objects
+  return response.json();
 }
 
 export async function getData(url = "", auth = "") {
-  // Default options are marked with *
   const response = await fetch(url, {
     method: "GET",
     headers: {
@@ -22,11 +20,10 @@ export async function getData(url = "", auth = "") {
       Authorization: `Bearer ${auth}`,
     },
   });
-  return response.json(); // parses JSON response into native JavaScript objects
+  return response.json();
 }
 
-export async function updateData(url = "", forId: "", data = {}, auth = "") {
-  // Default options are marked with *
+export async function updateData(url = "", forId = "", data = {}, auth = "") {
   const response = await fetch(`${url}/${forId}`, {
     method: "PUT",
     headers: {
@@ -36,11 +33,10 @@ export async function updateData(url = "", forId: "", data = {}, auth = "") {
     },
     body: JSON.stringify(data),
   });
-  return response.json(); // parses JSON response into native JavaScript objects
+  return response.json();
 }
 
-export async function deleteData(url = "", forId: "", auth = "") {
-  // Default options are marked with *
+export async function deleteData(url = "", forId = "", auth = "") {
   const response = await fetch(`${url}/${forId}`, {
     method: "DELETE",
     headers: {
@@ -49,5 +45,5 @@ export async function deleteData(url = "", forId: "", auth = "") {
       Authorization: `Bearer ${auth}`,
     },
   });
-  return response.json(); // parses JSON response into native JavaScript objects
+  return response.json();
 }

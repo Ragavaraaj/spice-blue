@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useOnClickOutside } from "../../utils/hooks";
-import { localOnClickType, localOnClickDivType, Props } from "./interface";
+import { OnChangeOfTimeType, Props } from "./interface";
 import {
   Content,
   Display,
@@ -9,11 +9,16 @@ import {
   DropDownDisplay,
   Container,
 } from "./styles";
+import { OnClickFunctionType } from "../../utils/commonTypes";
 
 export const TimeInput: FC<Props> = (props) => {
-  const [hours, setHours] = useState<string>(props.initialValue.hours);
-  const [minutes, setMinutes] = useState<string>(props.initialValue.mins);
-  const [amOrPm, setAmOrPm] = useState<string>(props.initialValue.amOrPM);
+  const [hours, setHours] = useState<string>(props.initialValue?.hours ?? "12");
+  const [minutes, setMinutes] = useState<string>(
+    props.initialValue?.mins ?? "30"
+  );
+  const [amOrPm, setAmOrPm] = useState<string>(
+    props.initialValue?.amOrPM ?? "AM"
+  );
 
   const dropDownRef = useRef<HTMLDivElement>(null);
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
@@ -32,7 +37,7 @@ export const TimeInput: FC<Props> = (props) => {
     setOpenDropDown(false);
   });
 
-  const localOnClick: localOnClickType = (forEvent, val) => (event) => {
+  const onChangeOfTime: OnChangeOfTimeType = (forEvent, val) => (event) => {
     event.preventDefault();
     switch (forEvent) {
       case "hours":
@@ -47,7 +52,7 @@ export const TimeInput: FC<Props> = (props) => {
     }
   };
 
-  const localOnClickDiv: localOnClickDivType = (event) => {
+  const localOnClickDiv: OnClickFunctionType = (event) => {
     event.preventDefault();
     setOpenDropDown(true);
   };
@@ -67,7 +72,7 @@ export const TimeInput: FC<Props> = (props) => {
                 const val = i + 1 < 10 ? `0${i + 1}` : `${i + 1}`;
                 return (
                   <DropDownDisplay
-                    onClick={localOnClick("hours", val)}
+                    onClick={onChangeOfTime("hours", val)}
                     selected={val === hours}
                     key={`key_${i}`}
                   >
@@ -78,13 +83,13 @@ export const TimeInput: FC<Props> = (props) => {
             </div>
             <div>
               <DropDownDisplay
-                onClick={localOnClick("minutes", "00")}
+                onClick={onChangeOfTime("minutes", "00")}
                 selected={"00" === minutes}
               >
                 00
               </DropDownDisplay>
               <DropDownDisplay
-                onClick={localOnClick("minutes", "30")}
+                onClick={onChangeOfTime("minutes", "30")}
                 selected={"30" === minutes}
               >
                 30
@@ -92,13 +97,13 @@ export const TimeInput: FC<Props> = (props) => {
             </div>
             <div>
               <DropDownDisplay
-                onClick={localOnClick("amOrPm", "AM")}
+                onClick={onChangeOfTime("amOrPm", "AM")}
                 selected={"AM" === amOrPm}
               >
                 AM
               </DropDownDisplay>
               <DropDownDisplay
-                onClick={localOnClick("amOrPm", "PM")}
+                onClick={onChangeOfTime("amOrPm", "PM")}
                 selected={"PM" === amOrPm}
               >
                 PM

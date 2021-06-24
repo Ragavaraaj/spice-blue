@@ -1,8 +1,9 @@
 import React, { FC, useRef, useState } from "react";
 import { useOnClickOutside } from "../../utils/hooks";
 import { DropDown, Container, Display, DropDownDisplay } from "./styles";
-import { localOnClickDivType, localOnSelectType, Props } from "./interface";
+import { localOnSelectType, Props } from "./interface";
 import { FetchDropDownDataType_Results_Data } from "../../ApiResponseType";
+import { OnClickFunctionType } from "../../utils/commonTypes";
 
 export const Select: FC<Props> = (props) => {
   const [selectValue, setSelectValue] = useState(
@@ -23,14 +24,14 @@ export const Select: FC<Props> = (props) => {
     setOpenDropDown(false);
   };
 
-  const localOnClick: localOnClickDivType = (event) => {
+  const localOnClick: OnClickFunctionType = (event) => {
     event.preventDefault();
     setOpenDropDown(true);
   };
 
   return (
     <Container>
-      <label>assign to</label>
+      <label>assign user</label>
       <Display onClick={localOnClick} clickedStyleChange={openDropDown}>
         {selectValue}
       </Display>

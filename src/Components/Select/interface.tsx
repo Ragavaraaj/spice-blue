@@ -1,5 +1,5 @@
-import { MouseEvent } from "react";
 import { FetchDropDownDataType_Results_Data } from "../../ApiResponseType";
+import { OnClickFunctionType } from "../../utils/commonTypes";
 
 export interface Props {
   initialValue?: string;
@@ -7,11 +7,9 @@ export interface Props {
   onChange: (name: string, data: string) => void;
 }
 
-export type localOnClickDivType = (event: MouseEvent<HTMLElement>) => void;
-
 export type localOnSelectType = (
   data: FetchDropDownDataType_Results_Data
-) => (event: MouseEvent<HTMLElement>) => void;
+) => OnClickFunctionType;
 
 export interface DisplayProps {
   clickedStyleChange: boolean;
