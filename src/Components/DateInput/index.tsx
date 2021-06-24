@@ -112,6 +112,7 @@ export const DateInput: FC<Props> = (props) => {
       "task_date",
       `${year}-${month < 10 ? `0${month + 1}` : `${month + 1}`}-${date}`
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [year, month, date]);
 
   return (

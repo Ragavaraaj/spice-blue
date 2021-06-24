@@ -25,6 +25,7 @@ export const TimeInput: FC<Props> = (props) => {
         : parseInt(hours);
     const getTimeInSeconds = get24Hrs * 60 * 60 + parseInt(minutes) * 60;
     props.onChange("task_time", getTimeInSeconds);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hours, minutes, amOrPm]);
 
   useOnClickOutside(dropDownRef, () => {
