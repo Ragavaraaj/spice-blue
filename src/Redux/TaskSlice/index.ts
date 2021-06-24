@@ -6,16 +6,23 @@ import {
 } from "../../ApiResponseType";
 import { RootState } from "../store";
 
+type StatusType = "idle" | "loading" | "failed";
 export interface CounterState {
   accessToken: string;
   userDetails: FetchUserIdResponse_Results | {};
   dropDownData: FetchDropDownDataType_Results_Data[];
   allTask: AddNewTaskResponse_Results[];
-  status: "idle" | "loading" | "failed";
+  status: {
+    editOrAddTask: StatusType;
+    deleteTask: StatusType;
+  };
 }
 
 const initialState: CounterState = {
-  status: "idle",
+  status: {
+    editOrAddTask: "idle",
+    deleteTask: "idle",
+  },
   accessToken: "",
   userDetails: {},
   allTask: [],
@@ -37,13 +44,6 @@ export const taskSlice = createSlice({
       state.userDetails = action.payload;
     },
 
-    updateStatus: (
-      state,
-      action: PayloadAction<"idle" | "loading" | "failed">
-    ) => {
-      state.status = action.payload;
-    },
-
     updateDropDownData: (
       state,
       action: PayloadAction<FetchDropDownDataType_Results_Data[]>
@@ -57,15 +57,24 @@ export const taskSlice = createSlice({
     ) => {
       state.allTask = action.payload;
     },
+
+    updateStateEditOrAddTask: (state, action: PayloadAction<StatusType>) => {
+      state.status = { ...state.status, editOrAddTask: action.payload };
+    },
+
+    updateStateDeleteTask: (state, action: PayloadAction<StatusType>) => {
+      state.status = { ...state.status, deleteTask: action.payload };
+    },
   },
 });
 
 export const {
   updateAccessToken,
   updateUserId,
-  updateStatus,
   updateDropDownData,
   updateAllTask,
+  updateStateEditOrAddTask,
+  updateStateDeleteTask,
 } = taskSlice.actions;
 
 export * from "./action";
@@ -75,5 +84,6 @@ export const DropDownDataSelector = (state: RootState) =>
 export const AccessTokenSelector = (state: RootState) => state.task.accessToken;
 export const UserDetailsSelector = (state: RootState) => state.task.userDetails;
 export const AllTaskSelector = (state: RootState) => state.task.allTask;
+export const StatusSelector = (state: RootState) => state.task.status;
 
 export default taskSlice.reducer;

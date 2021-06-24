@@ -1,12 +1,7 @@
 import React from "react";
 import { useRef, useState, FC, useEffect } from "react";
 import { useOnClickOutside } from "../../utils/hooks";
-import {
-  Props,
-  localOnClickDivType,
-  IncOrDecType,
-  OnSelectDateType,
-} from "./interface";
+import { Props, IncOrDecType, OnSelectDateType } from "./interface";
 import {
   Container,
   Content,
@@ -19,6 +14,7 @@ import {
   DateGrid,
   DateDisplay,
 } from "./styles";
+import { OnClickFunctionType } from "../../utils/commonTypes";
 
 const MONTH_NAME = [
   "Jan",
@@ -51,7 +47,7 @@ export const DateInput: FC<Props> = (props) => {
     setOpenDropDown(false);
   });
 
-  const localOnClick: localOnClickDivType = (event) => {
+  const localOnClick: OnClickFunctionType = (event) => {
     event.preventDefault();
     !openDropDown && setOpenDropDown(true);
   };
@@ -89,10 +85,7 @@ export const DateInput: FC<Props> = (props) => {
     const firstDayIndex = firstDay === 0 ? 6 : firstDay - 1;
     const dateRange: number[] = Array.from({ length: 35 }, (_, i) => i + 1);
 
-    console.log({ test: Array.from({ length: 35 }) });
-
     if (firstDayIndex === 0) {
-      console.log({ dateRange });
       return dateRange;
     }
 
@@ -102,16 +95,13 @@ export const DateInput: FC<Props> = (props) => {
       dateRange.length
     );
 
-    console.log({ move, rest });
-
     return [...move, ...rest];
   };
 
   useEffect(() => {
-    props.onChange(
-      "task_date",
-      `${year}-${month < 10 ? `0${month + 1}` : `${month + 1}`}-${date}`
-    );
+    const stringMonth = month < 10 ? `0${month + 1}` : `${month + 1}`;
+    const stringDate = date < 10 ? `0${date}` : `${date}`;
+    props.onChange("task_date", `${year}-${stringMonth}-${stringDate}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [year, month, date]);
 
@@ -121,7 +111,8 @@ export const DateInput: FC<Props> = (props) => {
       <Content onClick={localOnClick}>
         <Icon>date_range</Icon>
         <Display>
-          {date}/{month < 10 ? `0${month + 1}` : `${month + 1}`}/{year}
+          {date < 10 ? `0${date}` : `${date}`}/
+          {month < 10 ? `0${month + 1}` : `${month + 1}`}/{year}
         </Display>
         {openDropDown ? (
           <DropDown ref={dropDownRef}>

@@ -42,5 +42,5 @@ export interface AddNewTaskPayLoadType {
   task_time?: number;
   is_completed?: number;
   time_zone?: number;
-  task_mg?: string;
+  task_msg?: string;
 }

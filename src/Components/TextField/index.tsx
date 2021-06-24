@@ -1,13 +1,14 @@
 import React, { FC, useState } from "react";
-import { localOnChangeType, Props } from "./interface";
+import { Props } from "./interface";
 import { Container, TextInput } from "./styles";
+import { OnChangeFunctionType } from "../../utils/commonTypes";
 
 export const TextField: FC<Props> = (props) => {
   const [description, setDescription] = useState<string>(
     props.initialValue ?? ""
   );
 
-  const localOnChange: localOnChangeType = (event) => {
+  const localOnChange: OnChangeFunctionType = (event) => {
     event.preventDefault();
     setDescription(event.target.value);
   };
