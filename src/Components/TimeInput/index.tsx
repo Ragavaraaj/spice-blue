@@ -12,12 +12,12 @@ import {
 import { OnClickFunctionType } from "../../utils/commonTypes";
 
 export const TimeInput: FC<Props> = (props) => {
-  const [hours, setHours] = useState<string>(props.initialValue?.hours ?? "12");
+  const [hours, setHours] = useState<string>(props.initialValue?.hours ?? "7");
   const [minutes, setMinutes] = useState<string>(
-    props.initialValue?.mins ?? "30"
+    props.initialValue?.mins ?? "00"
   );
   const [amOrPm, setAmOrPm] = useState<string>(
-    props.initialValue?.amOrPM ?? "AM"
+    props.initialValue?.amOrPm ?? "AM"
   );
 
   const dropDownRef = useRef<HTMLDivElement>(null);
@@ -27,8 +27,11 @@ export const TimeInput: FC<Props> = (props) => {
     const get24Hrs =
       amOrPm === "PM" && parseInt(hours) < 12
         ? parseInt(hours) + 12
+        : amOrPm === "AM" && parseInt(hours) === 12
+        ? 0
         : parseInt(hours);
     const getTimeInSeconds = get24Hrs * 60 * 60 + parseInt(minutes) * 60;
+    console.log({ getTimeInSeconds });
     props.onChange("task_time", getTimeInSeconds);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hours, minutes, amOrPm]);

@@ -3,7 +3,7 @@ import { OnClickFunctionType } from "../../utils/commonTypes";
 interface InitialValueInterface {
   hours: string;
   mins: string;
-  amOrPM: string;
+  amOrPm: string;
 }
 
 export interface Props {

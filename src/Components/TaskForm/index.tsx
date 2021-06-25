@@ -46,6 +46,27 @@ export const TaskForm: FC<Props> = (props) => {
     }
   };
 
+  const getInitialTime = () => {
+    if (props.initialValue?.task_time) {
+      const hoursIn24 = props.initialValue.task_time / (60 * 60);
+      const hoursIn12 =
+        Math.trunc(hoursIn24) < 12
+          ? Math.trunc(hoursIn24)
+          : Math.trunc(hoursIn24) - 12;
+      const hours =
+        hoursIn12 === 0
+          ? "12"
+          : hoursIn12 < 10
+          ? `0${hoursIn12}`
+          : `${hoursIn12}`;
+      const amOrPm = hoursIn24 < 12 ? "AM" : "PM";
+      const mins = hoursIn24 === Math.round(hoursIn24) ? "00" : "30";
+      console.log({ hoursIn24, hoursIn12, mins, amOrPm });
+
+      return { hours, amOrPm, mins };
+    }
+  };
+
   return (
     <Form onSubmit={localOnSubmit}>
       <TextField
@@ -56,19 +77,27 @@ export const TaskForm: FC<Props> = (props) => {
         onChange={onChangeOfFormData}
         initialValue={props.initialValue?.task_date}
       />
-      <TimeInput onChange={onChangeOfFormData} />
+      <TimeInput
+        onChange={onChangeOfFormData}
+        initialValue={getInitialTime()}
+      />
       <Select
         onChange={onChangeOfFormData}
         dropDownData={dropDownData}
-        initialValue={props.assignedUserName}
+        initialValue={
+          dropDownData.find((x) => x.user_id === props.assignedUserId)?.name ??
+          "Select"
+        }
       />
 
       <ButtonGroup>
-        {(props.initialValue?.assigned_user ||
-          state.deleteTask === "loading") && (
+        {props.editForm && (
           <DeleteButton
             onClick={localOnClickDelete}
-            disabled={state.deleteTask === "loading"}
+            disabled={
+              state.deleteTask === "loading" ||
+              state.editOrAddTask === "loading"
+            }
           >
             {state.deleteTask === "idle" ? "delete" : "pending"}
           </DeleteButton>

@@ -3,15 +3,17 @@ import {
   FetchUserIdResponse_Results,
   FetchDropDownDataType_Results_Data,
   AddNewTaskResponse_Results,
+  FetchAllTaskResponse_Result,
 } from "../../ApiResponseType";
 import { RootState } from "../store";
 
 type StatusType = "idle" | "loading" | "failed";
+type AllTaskType = (AddNewTaskResponse_Results | FetchAllTaskResponse_Result)[];
 export interface CounterState {
   accessToken: string;
   userDetails: FetchUserIdResponse_Results | {};
   dropDownData: FetchDropDownDataType_Results_Data[];
-  allTask: AddNewTaskResponse_Results[];
+  allTask: AllTaskType;
   status: {
     editOrAddTask: StatusType;
     completeTask: StatusType;
@@ -53,10 +55,7 @@ export const taskSlice = createSlice({
       state.dropDownData = action.payload;
     },
 
-    updateAllTask: (
-      state,
-      action: PayloadAction<AddNewTaskResponse_Results[]>
-    ) => {
+    updateAllTask: (state, action: PayloadAction<AllTaskType>) => {
       state.allTask = action.payload;
     },
 

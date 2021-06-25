@@ -15,7 +15,6 @@ export const GlobalStyle = createGlobalStyle`
 `;
 
 export const AppDiv = styled.div`
-  margin: 1rem;
   height: 90vh;
   font-family: "Roboto", sans-serif;
 `;

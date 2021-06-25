@@ -4,7 +4,14 @@ import { TaskDisplay, TaskForm } from "../../Components";
 import { useAppDispatch, useAppSelector } from "../../utils/hooks";
 import { AddNewTaskPayLoadType } from "../../ApiResponseType";
 import { Props } from "./interface";
-import { Container, Content, Title, Divider } from "./styles";
+import {
+  Container,
+  Content,
+  Title,
+  Divider,
+  SidePanel,
+  NavBar,
+} from "./styles";
 import {
   fetchDropDownData,
   AccessTokenSelector,
@@ -13,6 +20,7 @@ import {
   deleteExistingTask,
   updateExistingTask,
   StatusSelector,
+  fetchAllTask,
 } from "../../Redux/TaskSlice";
 import { OnClickFunctionType } from "../../utils/commonTypes";
 
@@ -22,6 +30,7 @@ export const Task: FC<Props> = (props) => {
   const allTask = useAppSelector(AllTaskSelector);
   const status = useAppSelector(StatusSelector);
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
+  const [editForm, setEditForm] = useState<boolean>(false);
   const [taskIndex, setTaskIndex] = useState<number>(-1);
   const [completionTaskIndex, setCompletionTaskIndex] = useState<number>(-1);
 
@@ -37,17 +46,20 @@ export const Task: FC<Props> = (props) => {
   const localOnClick: OnClickFunctionType = (event) => {
     event.preventDefault();
     setOpenDropDown(true);
+    setEditForm(false);
     taskIndex > -1 && setTaskIndex(-1);
   };
 
   const closeForm = () => {
     setOpenDropDown(false);
+    setEditForm(false);
     taskIndex > -1 && setTaskIndex(-1);
   };
 
   useEffect(() => {
     if (accessToken) {
       dispatch(fetchDropDownData());
+      dispatch(fetchAllTask());
     }
   }, [dispatch, accessToken]);
 
@@ -56,12 +68,14 @@ export const Task: FC<Props> = (props) => {
       setOpenDropDown(true);
     } else {
       setOpenDropDown(false);
+      setEditForm(false);
     }
     setTaskIndex(-1);
   }, [status]);
 
   const editTask = (taskId: number) => {
     setOpenDropDown(true);
+    setEditForm(true);
     setTaskIndex(taskId);
   };
 
@@ -86,7 +100,6 @@ export const Task: FC<Props> = (props) => {
   };
 
   const editData = (data: AddNewTaskPayLoadType) => {
-    console.log(data);
     const payLoad: AddNewTaskPayLoadType = {
       ...data,
       time_zone: allTask[taskIndex].time_zone,
@@ -101,6 +114,8 @@ export const Task: FC<Props> = (props) => {
 
   return (
     <Container>
+      <SidePanel />
+      <NavBar />
       <Content>
         <Title allRoundedCorners={!openDropDown && allTask.length === 0}>
           <p>task {0}</p>
@@ -109,11 +124,12 @@ export const Task: FC<Props> = (props) => {
         </Title>
         {openDropDown ? (
           <TaskForm
+            editForm={editForm}
             onDelete={deleteTask}
             onSubmit={taskIndex > -1 ? editData : sendData}
             onCancel={closeForm}
             initialValue={generatorInitialValue()}
-            assignedUserName={allTask[taskIndex]?.user_name}
+            assignedUserId={allTask[taskIndex]?.user_id}
           />
         ) : (
           allTask.map((x, i) => (

@@ -31,11 +31,32 @@ export const Display = styled.p<DisplayProps>`
   padding: 0.5rem;
   background-color: white;
   border-radius: 5px;
+  position: relative;
   border: 1px solid
     ${(props) =>
       props.clickedStyleChange
         ? "var(--primary-color)"
         : "var(--border-color)"};
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid black;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+  }
 `;
 
 export const DropDownDisplay = styled.p`
