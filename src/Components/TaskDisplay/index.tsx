@@ -3,6 +3,9 @@ import { Props } from "./interface";
 import { ButtonGroup, Content, Label } from "./styles";
 import { OnClickFunctionType } from "../../utils/commonTypes";
 
+const AVATAR_LINK =
+  "http://www.gravatar.com/avatar/f2e9acdec817e24d2980d853e89385f5?default=https%3A%2F%2Fs3.sloovi.com%2Favatar-default-icon.png";
+
 export const TaskDisplay: FC<Props> = (props) => {
   const localOnClickOfEdit: OnClickFunctionType = (event) => {
     event.preventDefault();
@@ -14,20 +17,14 @@ export const TaskDisplay: FC<Props> = (props) => {
     props.onComplete(props.taskIndex);
   };
 
-  const formateDate = (): string => {
-    const date = new Date(props.data.task_date);
-    const stringMonth =
-      date.getMonth() < 10 ? `0${date.getMonth()}` : date.getMonth();
-    const stringDate =
-      date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
-    return `${stringDate}/${stringMonth}/${date.getFullYear()}`;
-  };
-
   return (
     <Content roundedCorners={props.roundedCorners}>
-      <img src={props.data.user_icon} alt={props.data.user_name} />
+      <img
+        src={"user_icon" in props.data ? props.data.user_icon : AVATAR_LINK}
+        alt={"Avatar"}
+      />
       <Label isCompleted={props.data.is_completed === 0 ? false : true}>
-        {formateDate()}
+        {props.data.task_msg}
       </Label>
       <ButtonGroup>
         <button onClick={localOnClickOfEdit}>edit</button>

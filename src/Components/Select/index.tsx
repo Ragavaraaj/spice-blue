@@ -20,13 +20,13 @@ export const Select: FC<Props> = (props) => {
   const localOnSelect: localOnSelectType = (data) => (event) => {
     event.preventDefault();
     props.onChange("assigned_user", data.user_id);
-    setSelectValue(data.first);
+    setSelectValue(data.name);
     setOpenDropDown(false);
   };
 
   const localOnClick: OnClickFunctionType = (event) => {
     event.preventDefault();
-    setOpenDropDown(true);
+    setOpenDropDown((prv) => !prv);
   };
 
   return (
@@ -40,7 +40,7 @@ export const Select: FC<Props> = (props) => {
           {props.dropDownData?.map(
             (data: FetchDropDownDataType_Results_Data, i) => (
               <DropDownDisplay onClick={localOnSelect(data)} key={`key_${i}`}>
-                {data.first}
+                {data.name}
               </DropDownDisplay>
             )
           )}

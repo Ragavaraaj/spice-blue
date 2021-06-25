@@ -15,6 +15,7 @@ import {
   FetchDropDownDataResponse,
   AddNewTaskResponse,
   AddNewTaskPayLoadType,
+  FetchAllTaskResponse,
 } from "../../ApiResponseType";
 import { AppThunk } from "../store";
 import { DeleteTaskResponse } from "../../ApiResponseType/deleteTaskType";
@@ -53,6 +54,22 @@ export const fetchDropDownData = (): AppThunk => async (dispatch, getState) => {
         (x) => x.user_status === "accepted"
       );
       dispatch(updateDropDownData(data));
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("Something Went Wrong !!");
+    });
+};
+
+export const fetchAllTask = (): AppThunk => async (dispatch, getState) => {
+  console.log(getURL(ROUTE.toGetAndUpdateTask));
+
+  return await getData(
+    getURL(ROUTE.toGetAndUpdateTask),
+    getState().task.accessToken
+  )
+    .then((json: FetchAllTaskResponse) => {
+      dispatch(updateAllTask(json.results));
     })
     .catch((err) => {
       console.error(err);

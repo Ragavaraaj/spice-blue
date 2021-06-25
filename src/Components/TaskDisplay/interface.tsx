@@ -1,10 +1,13 @@
-import { AddNewTaskResponse_Results } from "../../ApiResponseType";
+import {
+  AddNewTaskResponse_Results,
+  FetchAllTaskResponse_Result,
+} from "../../ApiResponseType";
 
 export interface Props extends StyledContentProp {
   onComplete: (x: number) => void;
   onEdit: (x: number) => void;
   loading: boolean;
-  data: AddNewTaskResponse_Results;
+  data: AddNewTaskResponse_Results | FetchAllTaskResponse_Result;
   taskIndex: number;
 }
 

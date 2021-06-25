@@ -32,14 +32,13 @@ const MONTH_NAME = [
 ];
 
 export const DateInput: FC<Props> = (props) => {
-  const [year, setYear] = useState<number>(
-    (props?.initialValue
-      ? new Date(props?.initialValue)
-      : new Date()
-    ).getFullYear()
-  );
-  const [month, setMonth] = useState<number>(new Date().getMonth());
-  const [date, setDate] = useState<number>(new Date().getDate());
+  const currentOrSelectedDate = props?.initialValue
+    ? new Date(props?.initialValue)
+    : new Date();
+
+  const [year, setYear] = useState<number>(currentOrSelectedDate.getFullYear());
+  const [month, setMonth] = useState<number>(currentOrSelectedDate.getMonth());
+  const [date, setDate] = useState<number>(currentOrSelectedDate.getDate());
   const dropDownRef = useRef<HTMLDivElement>(null);
   const [openDropDown, setOpenDropDown] = useState<boolean>(false);
 
